@@ -21,3 +21,14 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
+- task: Gradle@3
+  inputs:
+    gradleWrapperFile: 'gradlew'
+    tasks: 'build'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    testRunTitle: 'unit test'
+    javaHomeOption: 'JDKVersion'
+    sonarQubeRunAnalysis: false
+    checkStyleRunAnalysis: true
+    spotBugsAnalysis: false
