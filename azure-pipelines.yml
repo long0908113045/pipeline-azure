@@ -29,6 +29,7 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     testRunTitle: 'unit test'
     javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
     sonarQubeRunAnalysis: false
     checkStyleRunAnalysis: true
     spotBugsAnalysis: false
