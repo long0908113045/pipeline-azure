@@ -19,17 +19,6 @@ steps:
     jdkVersionOption: '17'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'build'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    testRunTitle: 'unit test'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
-    sonarQubeRunAnalysis: false
     checkStyleRunAnalysis: true
-    spotBugsAnalysis: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
