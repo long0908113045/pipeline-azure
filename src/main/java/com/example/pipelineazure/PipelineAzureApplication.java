@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PipelineAzureApplication {
 
 	public static void main(String[] args) {
+		String a = "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
 		SpringApplication.run(PipelineAzureApplication.class, args);
 	}
 
