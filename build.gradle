@@ -30,3 +30,26 @@ tasks.withType(Checkstyle) {
 		configDirectory.set(file("$rootDir/gradle/config/checkstyle"))
 	}
 }
+
+task buildFrontend(type: Exec) {
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine 'cmd', '/c', 'cd src/main/frontend && npm run-script build && xcopy build\\* ..\\resources\\static\\ /Y /E '
+	} else {
+		commandLine 'sh', '-c', 'cd src/main/frontend && npm run-script build && cp -r build/* ../resources/static/'
+	}
+}
+
+build.dependsOn buildFrontend
+bootJar.dependsOn buildFrontend
+
+def frontendFiles = project.fileTree(dir: "src/app", include: "**/*.ts")
+
+task npmInstall(type: Exec) {
+	inputs.files(frontendFiles)
+	commandLine 'npm', 'install'
+}
+
+task checkStyleFrontend(type: Exec) {
+  inputs.files(frontendFiles)
+  commandLine 'npm', 'run', 'lint'
+}
