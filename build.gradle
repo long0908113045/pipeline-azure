@@ -33,9 +33,9 @@ tasks.withType(Checkstyle) {
 
 task buildFrontend(type: Exec) {
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine 'cmd', '/c', 'cd src/main/frontend && npm run-script build && xcopy build\\* ..\\resources\\static\\ /Y /E '
+		commandLine 'cmd', '/c', 'npm run-script build && xcopy build\\* ..\\resources\\main\\static\\ /Y /E '
 	} else {
-		commandLine 'sh', '-c', 'cd src/main/frontend && npm run-script build && cp -r build/* ../resources/static/'
+		commandLine 'sh', '-c', 'npm run-script build && cp -r build/* ../resources/main/static/'
 	}
 }
 

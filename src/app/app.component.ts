@@ -10,7 +10,7 @@ export class AppComponent implements OnInit{
   title = 'pipeline azure';
   employees: string = ''
   ngOnInit(): void {
-    axios.get('http://localhost:8080/api/employees')
+    axios.get('api/employees')
       .then((response) => {
         // handle success
         this.employees = response.data
