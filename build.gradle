@@ -33,23 +33,22 @@ tasks.withType(Checkstyle) {
 
 task buildFrontend(type: Exec) {
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine 'cmd', '/c', 'npm run-script build && xcopy build\\* ..\\resources\\main\\static\\ /Y /E '
+		commandLine 'cmd', '/c', 'npm run-script build && xcopy dist\\frontend build\\resources\\main\\static\\ /Y /E'
 	} else {
-		commandLine 'sh', '-c', 'npm run-script build && cp -r build/* ../resources/main/static/'
+		commandLine 'sh', '-c', 'npm run-script build && cp -r dist/frontend build/resources/main/static/'
 	}
 }
 
-build.dependsOn buildFrontend
 bootJar.dependsOn buildFrontend
+build.dependsOn buildFrontend
 
 def frontendFiles = project.fileTree(dir: "src/app", include: "**/*.ts")
 
-task npmInstall(type: Exec) {
-	inputs.files(frontendFiles)
-	commandLine 'npm', 'install'
-}
-
 task checkFrontend(type: Exec) {
   inputs.files(frontendFiles)
-  commandLine 'npm', 'run', 'lint'
+  if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+    commandLine 'cmd', '/c', 'npm run-script lint'
+  } else {
+    commandLine 'sh', '-c', 'npm run-script lint'
+  }
 }

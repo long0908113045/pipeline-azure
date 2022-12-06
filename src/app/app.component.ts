@@ -8,7 +8,7 @@ import axios from 'axios';
 })
 export class AppComponent implements OnInit{
   title = 'pipeline azure';
-  employees: string = ''
+  employees = ''
   ngOnInit(): void {
     axios.get('api/employees')
       .then((response) => {

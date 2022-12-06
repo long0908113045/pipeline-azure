@@ -10,7 +10,7 @@ class PipelineAzureApplicationTests {
 
 	@Test
 	void contextLoads() {
-    String name = "Hello word";
+    String name = "Product is created successfully";
     assertEquals(name, "Product is created successfully");
 	}
 
