@@ -1,0 +1,7 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = '9.3'
+    showViolations = true
+    configFile = file("$rootDir/gradle/config/checkstyle/checkstyle.xml")
+}
