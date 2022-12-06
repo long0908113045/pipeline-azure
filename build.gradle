@@ -49,7 +49,7 @@ task npmInstall(type: Exec) {
 	commandLine 'npm', 'install'
 }
 
-task checkStyleFrontend(type: Exec) {
+task checkFrontend(type: Exec) {
   inputs.files(frontendFiles)
   commandLine 'npm', 'run', 'lint'
 }
