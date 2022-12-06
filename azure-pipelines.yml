@@ -31,7 +31,7 @@ stages:
                 node --version
                 npm install
         backendTest:
-              gradleTask: 'domains:checkstyleMain checkstyleMain checkstyleTest test'
+              gradleTask: 'checkstyleMain checkstyleTest test'
               gradleTaskDisplayname: 'backend'
               preTestCommand: |
                 java --version
