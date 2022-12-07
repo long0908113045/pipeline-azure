@@ -56,8 +56,8 @@ task checkStyleFrontend(type: Exec) {
 task checkTestFrontend(type: Exec) {
   inputs.files(frontendFiles)
   if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-    commandLine 'cmd', '/c', 'npm run-script lint'
+    commandLine 'cmd', '/c', 'npm run-script test'
   } else {
-    commandLine 'sh', '-c', 'npm run-script lint'
+    commandLine 'sh', '-c', 'npm run-script test'
   }
 }

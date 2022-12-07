@@ -1,13 +1,7 @@
 FROM node:16.14.0-alpine AS app-base
 FROM gradle:7.5.1-jdk17 AS build
 
-COPY . /app
+ARG JAR_FILE=build/libs/pipeline-azure-0.0.1-SNAPSHOT.jar
+ADD ${JAR_FILE} app.jar
 
-WORKDIR /app
-
-CMD npm install
-CMD ./gradlew build
-
-WORKDIR /app/build/libs
-
-CMD java -jar pipeline-azure-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","app.jar"]
