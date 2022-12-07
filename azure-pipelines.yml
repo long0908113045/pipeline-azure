@@ -42,7 +42,7 @@ stages:
     strategy:
       matrix:
         frontendTest:
-              gradleTask: 'checkStyleFrontend checkTestFrontend'
+              gradleTask: 'checkStyleFrontend'
               gradleTaskDisplayname: 'frontend'
               preTestCommand: |
                 npm --version
