@@ -44,7 +44,16 @@ build.dependsOn buildFrontend
 
 def frontendFiles = project.fileTree(dir: "src/app", include: "**/*.ts")
 
-task checkFrontend(type: Exec) {
+task checkStyleFrontend(type: Exec) {
+  inputs.files(frontendFiles)
+  if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+    commandLine 'cmd', '/c', 'npm run-script lint'
+  } else {
+    commandLine 'sh', '-c', 'npm run-script lint'
+  }
+}
+
+task checkTestFrontend(type: Exec) {
   inputs.files(frontendFiles)
   if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
     commandLine 'cmd', '/c', 'npm run-script lint'
