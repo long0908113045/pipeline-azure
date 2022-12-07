@@ -35,7 +35,7 @@ task buildFrontend(type: Exec) {
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine 'cmd', '/c', 'npm run-script build && xcopy dist\\frontend build\\resources\\main\\static\\ /Y /E'
 	} else {
-		commandLine 'sh', '-c', 'npm run-script build && mkdir -p build/resources/main/static  && cp -r dist/frontend/ build/resources/main/static/'
+		commandLine 'sh', '-c', 'npm run-script build && cp -r dist/frontend build/resources/main/static'
 	}
 }
 
