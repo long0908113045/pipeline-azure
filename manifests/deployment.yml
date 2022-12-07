@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: pipelineazuredeploy 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pipelineazuredeploy
+  template:
+    metadata:
+      labels:
+        app: pipelineazuredeploy 
+    spec:
+      containers:
+        - name: pipelineazuredeploy 
+          image: pipelineazuredeploy.azurecr.io/pipelineazuredeploy
+          ports:
+          - containerPort: 8080
