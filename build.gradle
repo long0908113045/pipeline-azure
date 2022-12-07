@@ -33,14 +33,23 @@ tasks.withType(Checkstyle) {
 
 task buildFrontend(type: Exec) {
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine 'cmd', '/c', 'npm run-script build && xcopy dist\\frontend build\\resources\\main\\static\\ /Y /E'
+		commandLine 'cmd', '/c', 'npm run-script build'
 	} else {
-		commandLine 'sh', '-c', 'npm run-script build && mkdir -p build/resources/main/static  && cp -RT dist/frontend/ build/resources/main/static/'
+    commandLine 'sh', '-c', 'npm run-script build'
 	}
 }
 
-bootJar.dependsOn buildFrontend
-build.dependsOn buildFrontend
+task copyFileBuildFrontendToBuildJar(type: Exec) {
+  if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+    commandLine 'cmd', '/c', 'xcopy dist\\frontend build\\resources\\main\\static\\ /Y /E'
+  } else {
+    commandLine 'sh', '-c', 'mkdir -p build/resources/main/static  && cp -RT dist/frontend/ build/resources/main/static/'
+  }
+}
+copyFileBuildFrontendToBuildJar.dependsOn buildFrontend
+bootJar.dependsOn copyFileBuildFrontendToBuildJar
+build.dependsOn copyFileBuildFrontendToBuildJar
+
 
 def frontendFiles = project.fileTree(dir: "src/app", include: "**/*.ts")
 
