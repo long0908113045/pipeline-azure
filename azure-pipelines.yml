@@ -85,7 +85,7 @@ stages:
           jdkVersionOption: '17'
           jdkArchitectureOption: 'x64'
           gradleOptions: '-Xmx3072m'
-          tasks: $(gradleTask)
+          tasks: bootJar
 
 - stage: BuildDocker
   displayName: Build Docker Image
