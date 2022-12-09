@@ -2,11 +2,11 @@
 # Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-trigger:
-- main
-
 resources:
-- repo: self
+  pipelines:
+  - pipeline: CheckTest # Name of the pipeline resource.
+    source: azure-pipelines # The name of the pipeline referenced by this pipeline resource.
+    trigger: true # Run app-ci pipeline when any run of security-lib-ci completes
 
 variables:
 
@@ -33,6 +33,16 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - bash: ./gradlew task --build-cache | npm install
+    - task: Gradle@2
+      displayName: Build file jar
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        gradleOptions: '-Xmx3072m'
+        tasks: bootJar
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
