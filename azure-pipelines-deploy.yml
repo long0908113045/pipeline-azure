@@ -10,13 +10,14 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'b9f42f5a-5415-4bc1-a166-9bf1da733346'
-  imageRepository: 'learningazuredevopsdockerimage'
-  containerRegistry: 'learningazuredevopscontainerregistry.azurecr.io'
-  dockerfilePath: 'Dockerfile'
+    # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '34adc529-4921-4eb4-89c4-e8898169880c'
+  imageRepository: 'longpipelineazure'
+  containerRegistry: 'learningdevopscontainerregisty.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'learningazuredevopscontainerregistryf688-auth'
+  imagePullSecret: 'learningdevopscontainerregistyf0a8-auth'
+
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
