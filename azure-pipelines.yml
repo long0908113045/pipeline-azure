@@ -4,6 +4,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '3201e31e-a563-488f-a300-4fe9ec0033e7'
+  imageRepository: 'examdevopsimage'
+  containerRegistry: 'examdevopscontainerregistry.azurecr.io'
+  dockerfilePath: 'Dockerfile'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'examdevopscontainerregistry100559ec-auth'
+
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
@@ -53,3 +62,67 @@ stages:
         jdkArchitectureOption: 'x64'
         gradleOptions: '-Xmx3072m'
         tasks: $(gradleTask)
+
+- stage: Build
+  displayName: Build stage
+  dependsOn: RunTests
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - bash: ./gradlew task --build-cache | npm install
+    - task: Gradle@2
+      displayName: Build file jar
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        gradleOptions: '-Xmx3072m'
+        tasks: bootJar
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+    - upload: manifests
+      artifact: manifests
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'dev.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
