@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: '7900d8ec-c285-40da-a713-c2c31f4338b5'
   imageRepository: 'longexamdevopsrepository'
   containerRegistry: 'examdevopscontainerregistry.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'examdevopscontainerregistry9717cdbb-auth'
 
