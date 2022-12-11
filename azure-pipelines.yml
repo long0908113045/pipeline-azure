@@ -4,17 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 variables:
-
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'ContainerRegistry'
-  imageRepository: 'pipelineazuredeploy'
-  containerRegistry: 'examdevopscontainerregistry.azurecr.io'
-  dockerfilePath: 'Dockerfile'
-  tag: '$(Build.BuildId)'
-  imagePullSecret: 'examdevopscontainerregistry100559ec-auth'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+- group: azure-pipelines
 
 trigger:
   branches:
