@@ -33,15 +33,15 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - task: Gradle@2
+      displayName: Build file jar
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        gradleWrapperFile: 'gradlew'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        gradleOptions: '-Xmx3072m'
+        tasks: bootJars
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
