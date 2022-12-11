@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: 'e1fc48fd-b621-49d6-92d3-80a911ffbd34'
   imageRepository: 'longexamdevopsrepository'
   containerRegistry: 'examdevopscontainerregistry.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'examdevopscontainerregistry176587cc-auth'
 
@@ -31,6 +31,17 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - bash: ./gradlew task --build-cache | npm install
+    - task: Gradle@2
+      displayName: Build file jar
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        gradleOptions: '-Xmx3072m'
+        tasks: bootJar
+    
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
