@@ -6,7 +6,7 @@
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '3201e31e-a563-488f-a300-4fe9ec0033e7'
+  dockerRegistryServiceConnection: 'ContainerRegistry'
   imageRepository: 'examdevopsimage'
   containerRegistry: 'examdevopscontainerregistry.azurecr.io'
   dockerfilePath: 'Dockerfile'
