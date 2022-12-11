@@ -1,19 +1,19 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: pipelineazuredeploy 
+  name: examdevopscontainerregistry 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pipelineazuredeploy
+      app: examdevopscontainerregistry
   template:
     metadata:
       labels:
-        app: pipelineazuredeploy 
+        app: examdevopscontainerregistry 
     spec:
       containers:
-        - name: pipelineazuredeploy 
-          image: pipelineazuredeploy.azurecr.io/pipelineazuredeploy
+        - name: examdevopscontainerregistry 
+          image: examdevopscontainerregistry.azurecr.io/pipelineazuredeploy
           ports:
           - containerPort: 8080
