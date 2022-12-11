@@ -33,6 +33,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - bash: ./gradlew task --build-cache | npm install
     - task: Gradle@2
       displayName: Build file jar
       inputs:
