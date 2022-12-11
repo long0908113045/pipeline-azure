@@ -42,7 +42,7 @@ stages:
         jdkVersionOption: '17'
         jdkArchitectureOption: 'x64'
         gradleOptions: '-Xmx3072m'
-        tasks: bootJars
+        tasks: bootJar
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
