@@ -14,6 +14,6 @@ public class EmployeeController {
   // tag::get-aggregate-root[]
   @GetMapping("api/employees")
   String all() {
-    return "Hello word";
+    return "long";
   }
 }
