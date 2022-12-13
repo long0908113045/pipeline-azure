@@ -60,10 +60,6 @@ stages:
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '17'
         jdkArchitectureOption: 'x64'
-        sonarQubeRunAnalysis: true
-        sqGradlePluginVersionChoice: 'specify'
-        sonarQubeGradlePluginVersion: '2.6.1'
-        spotBugsAnalysis: false
         gradleOptions: '-Xmx3072m'
         tasks: $(gradleTask)
 
