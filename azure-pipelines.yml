@@ -130,3 +130,41 @@ stages:
 #                 $(imagePullSecret)
 #               containers: |
 #                 $(containerRegistry)/$(imageRepository):$(tag)
+
+- stage: Runsonar
+  displayName: Runsonar Qube
+  dependsOn: RunTests
+  jobs:
+  - job: Runsonar
+    steps:
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'sonarQubeDefault'
+        scannerMode: 'Other'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner,
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.projectKey=LearningCloudComputing_LearningCloudComputing_AYUKF067bjKg4nG5xdSV
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '11'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'PreInstalled'
+    - task: Gradle@3
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        tasks: 'build'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        sonarQubeRunAnalysis: true
+        sqGradlePluginVersionChoice: 'specify'
+        sonarQubeGradlePluginVersion: '2.6.1'
+        spotBugsAnalysis: false
+    - task: SonarQubePublish@5
+      inputs:
+        pollingTimeoutSec: '300'
+        
+    
+
