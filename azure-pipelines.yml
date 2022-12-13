@@ -133,7 +133,6 @@ stages:
 
 - stage: Runsonar
   displayName: Runsonar Qube
-  dependsOn: RunTests
   jobs:
   - job: Runsonar
     steps:
