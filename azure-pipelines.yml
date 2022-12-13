@@ -28,44 +28,44 @@ pr:
 
 
 stages:
-- stage: RunTests
-  displayName: Run All Tests
-  jobs:
-  - job: RunUnitTests
-    displayName: 'Run Unit Tests:'
-    strategy:
-      matrix:
-        frontendTest:
-              gradleTask: 'checkStyleFrontend'
-              gradleTaskDisplayname: 'frontend'
-              preTestCommand: |
-                npm --version
-                node --version
-                npm install
-        backendTest:
-              gradleTask: 'checkstyleMain checkstyleTest test'
-              gradleTaskDisplayname: 'backend'
-              preTestCommand: |
-                java --version
-                which java
-      maxParallel: 2
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - bash: ./gradlew task --build-cache $(preTestCommand)
-    - task: Gradle@2
-      displayName: Run $(gradleTaskDisplayname) tests
-      inputs:
-        gradleWrapperFile: 'gradlew'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '17'
-        jdkArchitectureOption: 'x64'
-        sonarQubeRunAnalysis: true
-        sqGradlePluginVersionChoice: 'specify'
-        sonarQubeGradlePluginVersion: '2.6.1'
-        spotBugsAnalysis: false
-        gradleOptions: '-Xmx3072m'
-        tasks: $(gradleTask)
+# - stage: RunTests
+#   displayName: Run All Tests
+#   jobs:
+#   - job: RunUnitTests
+#     displayName: 'Run Unit Tests:'
+#     strategy:
+#       matrix:
+#         frontendTest:
+#               gradleTask: 'checkStyleFrontend'
+#               gradleTaskDisplayname: 'frontend'
+#               preTestCommand: |
+#                 npm --version
+#                 node --version
+#                 npm install
+#         backendTest:
+#               gradleTask: 'checkstyleMain checkstyleTest test'
+#               gradleTaskDisplayname: 'backend'
+#               preTestCommand: |
+#                 java --version
+#                 which java
+#       maxParallel: 2
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
+#     - bash: ./gradlew task --build-cache $(preTestCommand)
+#     - task: Gradle@2
+#       displayName: Run $(gradleTaskDisplayname) tests
+#       inputs:
+#         gradleWrapperFile: 'gradlew'
+#         javaHomeOption: 'JDKVersion'
+#         jdkVersionOption: '17'
+#         jdkArchitectureOption: 'x64'
+#         sonarQubeRunAnalysis: true
+#         sqGradlePluginVersionChoice: 'specify'
+#         sonarQubeGradlePluginVersion: '2.6.1'
+#         spotBugsAnalysis: false
+#         gradleOptions: '-Xmx3072m'
+#         tasks: $(gradleTask)
 
 # - stage: Build
 #   displayName: Build stage
@@ -149,7 +149,7 @@ stages:
     
     - task: JavaToolInstaller@0
       inputs:
-        versionSpec: '11'
+        versionSpec: '17'
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
     
