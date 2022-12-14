@@ -66,6 +66,10 @@ stages:
   - job: Runsonar
     # dependsOn: RunUnitTests
     steps:
+    - bash: ./gradlew task --build-cache |
+                npm --version
+                node --version
+                npm install
     - task: SonarQubePrepare@5
       inputs:
         SonarQube: 'sonar-qube'
