@@ -63,6 +63,41 @@ stages:
         gradleOptions: '-Xmx3072m'
         tasks: $(gradleTask)
 
+  - job: Runsonar
+    dependsOn: RunUnitTests
+    steps:
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'sonar-qube'
+        scannerMode: 'Other'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner,
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.projectKey=sonar.projectKey=LearningCloudComputing_LearningCloudComputing_AYUOD8i-zIKAGacwOAdY
+    
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '11'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'PreInstalled'
+    
+    - task: Gradle@3
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        tasks: 'build'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        sonarQubeRunAnalysis: true
+        sqGradlePluginVersionChoice: 'specify'
+        sonarQubeGradlePluginVersion: '2.6.1'
+        spotBugsAnalysis: false
+    
+    - task: SonarQubePublish@5
+      inputs:
+        pollingTimeoutSec: '300'
+
 # - stage: Build
 #   displayName: Build stage
 #   dependsOn: RunTests
@@ -126,43 +161,3 @@ stages:
 #                 $(imagePullSecret)
 #               containers: |
 #                 $(containerRegistry)/$(imageRepository):$(tag)
-
-# - stage: Runsonar
-#   displayName: Runsonar Qube
-#   jobs:
-#   - job: Runsonar
-#     steps:
-#     - task: SonarQubePrepare@5
-#       inputs:
-#         SonarQube: 'SonarQube'
-#         scannerMode: 'Other'
-#         extraProperties: |
-#           # Additional properties that will be passed to the scanner,
-#           # Put one key=value per line, example:
-#           # sonar.exclusions=**/*.bin
-#           sonar.projectKey=LearningCloudComputing_LearningCloudComputing_AYUKF067bjKg4nG5xdSV
-    
-#     - task: JavaToolInstaller@0
-#       inputs:
-#         versionSpec: '17'
-#         jdkArchitectureOption: 'x64'
-#         jdkSourceOption: 'PreInstalled'
-    
-#     - task: Gradle@3
-#       inputs:
-#         gradleWrapperFile: 'gradlew'
-#         tasks: 'build'
-#         publishJUnitResults: true
-#         testResultsFiles: '**/TEST-*.xml'
-#         javaHomeOption: 'JDKVersion'
-#         sonarQubeRunAnalysis: true
-#         sqGradlePluginVersionChoice: 'specify'
-#         sonarQubeGradlePluginVersion: '2.6.1'
-#         spotBugsAnalysis: false
-    
-#     - task: SonarQubePublish@5
-#       inputs:
-#         pollingTimeoutSec: '300'
-        
-    
-
