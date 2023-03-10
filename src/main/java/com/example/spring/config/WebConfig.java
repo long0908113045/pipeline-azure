@@ -1,9 +1,7 @@
-package com.example.pipelineazure.config;
+package com.example.spring.config;
 
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -28,8 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
       .resourceChain(true)
       .addResolver(new ResourceResolver());
   }
-  private class ResourceResolver extends PathResourceResolver{
-    private TransformedResource transformedResource(final Resource resource) throws IOException {
+  private static class ResourceResolver extends PathResourceResolver{
+    private TransformedResource transformedResource(final Resource resource) {
       String fileContent;
       try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
         fileContent = FileCopyUtils.copyToString(reader);

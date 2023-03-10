@@ -1,0 +1,13 @@
+<div class="container">
+
+  <div class="row mt-3">
+    <div class="col-3">id</div>
+    <div class="col-3">name</div>
+    <div class="col-3">email</div>
+  </div>
+  <div class="row mt-3" *ngFor="let user of users">
+    <div class="col-3">{{user.id}}</div>
+    <div class="col-3">{{user.name}}</div>
+    <div class="col-3">{{user.email}}</div>
+  </div>
+</div>

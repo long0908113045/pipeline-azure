@@ -23,6 +23,6 @@ describe('AppComponent', () => {
   it(`should have as title 'frontend'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('pipeline azure');
+    expect(app.title).toEqual('App');
   });
 });
