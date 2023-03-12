@@ -1,7 +1,7 @@
-package com.example.spring.User.Controller;
+package com.example.spring.user.controller;
 
-import com.example.spring.User.Model.User;
-import com.example.spring.User.Repository.UserRepository;
+import com.example.spring.user.model.User;
+import com.example.spring.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

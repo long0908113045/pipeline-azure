@@ -1,6 +1,6 @@
-package com.example.spring.User.Controller;
+package com.example.spring.user.controller;
 
-import com.example.spring.User.Repository.UserRepository;
+import com.example.spring.user.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
