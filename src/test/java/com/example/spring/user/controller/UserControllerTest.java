@@ -21,18 +21,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class UserControllerTest {
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-  @Autowired
-  protected MockMvc mockMvc;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    protected MockMvc mockMvc;
 
-  @MockBean
-  private UserRepository userRepository;
+    @MockBean
+    private UserRepository userRepository;
 
-  @Test
-  public void getAllUsers() throws Exception {
-    when(userRepository.findAll()).thenReturn(null);
-    this.mockMvc.perform(get("/api/user/all").contentType(MediaType.ALL))
-      .andDo(print())
-      .andExpect(status().isOk());
-  }
+    @Test
+    public void getAllUsers() throws Exception {
+        when(userRepository.findAll()).thenReturn(null);
+        this.mockMvc.perform(get("/api/user/all").contentType(MediaType.ALL))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

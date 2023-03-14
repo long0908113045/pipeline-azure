@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.0.0'
-	id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 apply from: 'gradle/checkstyle.gradle'
@@ -11,44 +11,46 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  implementation 'org.springframework.boot:spring-boot-starter-security'
-  implementation 'org.projectlombok:lombok:1.18.20'
-  implementation 'junit:junit:4.13.1'
-  runtimeOnly 'com.mysql:mysql-connector-j'
-  testImplementation 'org.springframework.security:spring-security-test'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.projectlombok:lombok:1.18.20'
+    implementation 'junit:junit:4.13.1'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 tasks.withType(Checkstyle) {
-	reports {
-		configDirectory.set(file("$rootDir/gradle/config/checkstyle"))
-	}
+    reports {
+        configDirectory.set(file("$rootDir/gradle/config/checkstyle"))
+    }
 }
 
 task buildFrontend(type: Exec) {
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine 'cmd', '/c', 'npm run-script build'
-	} else {
-    commandLine 'sh', '-c', 'npm run-script build'
-	}
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'npm run-script build'
+    } else {
+        commandLine 'sh', '-c', 'npm run-script build'
+    }
 }
 
 task copyFileBuildFrontendToBuildJar(type: Exec) {
-  if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-    commandLine 'cmd', '/c', 'xcopy dist\\frontend build\\resources\\main\\static\\ /Y /E'
-  } else {
-    commandLine 'sh', '-c', 'mkdir -p build/resources/main/static  && cp -RT dist/frontend/ build/resources/main/static/'
-  }
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'xcopy dist\\frontend build\\resources\\main\\static\\ /Y /E'
+    } else {
+        commandLine 'sh', '-c', 'mkdir -p build/resources/main/static  && cp -RT dist/frontend/ build/resources/main/static/'
+    }
 }
 copyFileBuildFrontendToBuildJar.dependsOn buildFrontend
 bootJar.dependsOn copyFileBuildFrontendToBuildJar
@@ -58,19 +60,19 @@ build.dependsOn copyFileBuildFrontendToBuildJar
 def frontendFiles = project.fileTree(dir: "src/app", include: "**/*.ts")
 
 task checkStyleFrontend(type: Exec) {
-  inputs.files(frontendFiles)
-  if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-    commandLine 'cmd', '/c', 'npm run-script lint'
-  } else {
-    commandLine 'sh', '-c', 'npm run-script lint'
-  }
+    inputs.files(frontendFiles)
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'npm run-script lint'
+    } else {
+        commandLine 'sh', '-c', 'npm run-script lint'
+    }
 }
 
 task checkTestFrontend(type: Exec) {
-  inputs.files(frontendFiles)
-  if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-    commandLine 'cmd', '/c', 'npm run-script test'
-  } else {
-    commandLine 'sh', '-c', 'npm run-script test'
-  }
+    inputs.files(frontendFiles)
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'npm run-script test'
+    } else {
+        commandLine 'sh', '-c', 'npm run-script test'
+    }
 }
