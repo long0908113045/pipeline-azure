@@ -24,18 +24,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityApplicationConfiguration {
-    @Autowired
+//    @Autowired
     private ExceptionAuthenticationEntryPoint exceptionAuthenticationEntryPoint;
 
-    @Autowired
+//    @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
-    @Autowired
+//    @Autowired
     private AppUserDetailService appUserDetailService;
 
-    @Autowired
+//    @Autowired
     private TokenAuthenticationProvider tokenAuthenticationProvider;
 
+    public SecurityApplicationConfiguration(AuthenticationConfiguration authenticationConfiguration,
+                                            ExceptionAuthenticationEntryPoint exceptionAuthenticationEntryPoint,
+                                            AppUserDetailService appUserDetailService,
+                                            TokenAuthenticationProvider tokenAuthenticationProvider){
+        this.authenticationConfiguration = authenticationConfiguration;
+        this.exceptionAuthenticationEntryPoint = exceptionAuthenticationEntryPoint;
+        this.appUserDetailService = appUserDetailService;
+        this.tokenAuthenticationProvider = tokenAuthenticationProvider;
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
