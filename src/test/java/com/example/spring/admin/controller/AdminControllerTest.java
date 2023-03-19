@@ -1,6 +1,6 @@
-package com.example.spring.user.controller;
+package com.example.spring.admin.controller;
 
-import com.example.spring.user.repository.UserRepository;
+import com.example.spring.admin.repository.AdminRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +17,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@WebMvcTest(UserController.class)
+@WebMvcTest(AdminController.class)
 @RunWith(SpringRunner.class)
-public class UserControllerTest {
+public class AdminControllerTest {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     protected MockMvc mockMvc;
 
     @MockBean
-    private UserRepository userRepository;
+    private AdminRepository adminRepository;
 
     @Test
     public void getAllUsers() throws Exception {
-        when(userRepository.findAll()).thenReturn(null);
+        when(adminRepository.findAll()).thenReturn(null);
         this.mockMvc.perform(get("/api/user/all").contentType(MediaType.ALL))
                 .andDo(print())
                 .andExpect(status().isOk());

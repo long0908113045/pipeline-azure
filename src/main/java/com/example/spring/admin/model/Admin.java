@@ -1,4 +1,4 @@
-package com.example.spring.user.model;
+package com.example.spring.admin.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class User {
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

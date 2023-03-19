@@ -1,8 +1,8 @@
 package com.example.spring.security.authenticationProvider;
 
-import com.example.spring.security.Utils.JwtTokenUtil;
+import com.example.spring.security.Utils.TokenUtil;
 import com.example.spring.security.authentication.AuthenticationToken;
-import com.example.spring.security.exception.SecurityAuthenticationException;
+import com.example.spring.security.exception.CommonAuthenticationException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-public class JsonWebTokenAuthenticationProvider implements AuthenticationProvider {
+public class TokenAuthenticationProvider implements AuthenticationProvider {
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private TokenUtil tokenUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -24,23 +24,23 @@ public class JsonWebTokenAuthenticationProvider implements AuthenticationProvide
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (!StringUtils.hasText(authentication.getPrincipal().toString())) {
-            throw new SecurityAuthenticationException("User key must not be empty.");
+            throw new CommonAuthenticationException("User key must not be empty.");
         }
         String username = null;
-        String jwtToken = null;
+        String jwtToken;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
         if (authentication.getPrincipal().toString().startsWith("Bearer ")) {
             jwtToken = authentication.getPrincipal().toString().substring(7);
             try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                username = tokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }
         } else {
-            throw new SecurityAuthenticationException("JWT Token does not begin with Bearer String");
+            throw new CommonAuthenticationException("JWT Token does not begin with Bearer String");
         }
 
         // Once we get the token validate it.
@@ -50,10 +50,9 @@ public class JsonWebTokenAuthenticationProvider implements AuthenticationProvide
 
             // if token is valid configure Spring Security to manually set
             // authentication
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                AuthenticationToken authenticationToken = new AuthenticationToken(
+            if (tokenUtil.validateToken(jwtToken, userDetails)) {
+                return new AuthenticationToken(
                         authentication.getPrincipal().toString(), userDetails.getAuthorities());
-                return authenticationToken;
             }
         }
         return null;

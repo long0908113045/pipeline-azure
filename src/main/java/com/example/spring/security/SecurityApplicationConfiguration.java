@@ -1,9 +1,9 @@
 package com.example.spring.security;
 
-import com.example.spring.security.authenticationEntryPoint.CommonAuthenticationEntryPoint;
-import com.example.spring.security.authenticationProvider.JsonWebTokenAuthenticationProvider;
+import com.example.spring.security.authenticationEntryPoint.ExceptionAuthenticationEntryPoint;
+import com.example.spring.security.authenticationProvider.TokenAuthenticationProvider;
 import com.example.spring.security.filter.AuthenticationTokenFilter;
-import com.example.spring.security.user.service.SecurityUserDetailService;
+import com.example.spring.security.user.service.AppUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,16 +25,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityApplicationConfiguration {
     @Autowired
-    private CommonAuthenticationEntryPoint commonAuthenticationEntryPoint;
+    private ExceptionAuthenticationEntryPoint exceptionAuthenticationEntryPoint;
 
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
     @Autowired
-    private SecurityUserDetailService securityUserDetailService;
+    private AppUserDetailService appUserDetailService;
 
     @Autowired
-    private JsonWebTokenAuthenticationProvider jsonWebTokenAuthenticationProvider;
+    private TokenAuthenticationProvider tokenAuthenticationProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -43,7 +43,7 @@ public class SecurityApplicationConfiguration {
 //                        .anyRequest("/api/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling().authenticationEntryPoint(commonAuthenticationEntryPoint)
+                .exceptionHandling().authenticationEntryPoint(exceptionAuthenticationEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -65,13 +65,13 @@ public class SecurityApplicationConfiguration {
 
     public AuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(securityUserDetailService);
+        daoAuthenticationProvider.setUserDetailsService(appUserDetailService);
         daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return daoAuthenticationProvider;
     }
 
     public AuthenticationProvider jsonWebTokenAuthenticationProvider() {
-        return jsonWebTokenAuthenticationProvider;
+        return tokenAuthenticationProvider;
     }
 
     public AuthenticationTokenFilter authenticationTokenFilter() throws Exception {

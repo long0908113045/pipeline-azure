@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtTokenUtil implements Serializable {
+public class TokenUtil implements Serializable {
     @Value("${jwt.secret}")
     private String secret;
 
@@ -41,17 +41,17 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    //retrieve username from jwt token
+    //retrieve username from token
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    //retrieve expiration date from jwt token
+    //retrieve expiration date from token
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+    private  <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = Jwts
                 .parser()
                 .setSigningKey(secret)
