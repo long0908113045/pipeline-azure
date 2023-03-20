@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/changelog-create-table-customer.yaml

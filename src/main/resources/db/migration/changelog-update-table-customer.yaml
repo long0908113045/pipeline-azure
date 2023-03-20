@@ -1,0 +1,7 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  1-1
+       author:  long
+       changes:
+         - sqlFile:
+             path: db/sql/update-data-table-customer.sql
